@@ -27,7 +27,7 @@ public class EmployeeService {
         try {
             return employeeRepo.save(employee);
         } catch (Exception e) {
-            throw new RuntimeException("Error saving employee: " + e.getMessage());
+            throw new RuntimeException("Error  saving employee: " + e.getMessage());
         }
     }
     public List<Employee> findAllEmployees(){
