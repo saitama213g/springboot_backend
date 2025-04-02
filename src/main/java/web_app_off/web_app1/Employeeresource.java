@@ -15,37 +15,37 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/employee")
 public class Employeeresource {
-    private final EmployeeService employeeRepo;
+    private final EmployeeService employeeserv;
 
     Employeeresource(EmployeeService employeeRepo) {
-        this.employeeRepo = employeeRepo;
+        this.employeeserv = employeeRepo;
     }
     @GetMapping("all")
     public ResponseEntity<List<Employee>> getAllEmployees()
     {
-        List<Employee> employees = employeeRepo.findAllEmployees();
+        List<Employee> employees = employeeserv.findAllEmployees();
         return (new ResponseEntity<>(employees, HttpStatus.OK));
     }
     @GetMapping("/find/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable long id)
     {
-        Employee employee = employeeRepo.findById(id);
+        Employee employee = employeeserv.findById(id);
         return (new ResponseEntity<>(employee, HttpStatus.OK));
     }
     @PostMapping("/add")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee)
     {
-        return new ResponseEntity<Employee> (employeeRepo.addEmployee(employee), HttpStatus.CREATED);
+        return new ResponseEntity<Employee> (employeeserv.addEmployee(employee), HttpStatus.CREATED);
     }
     @PutMapping("/update")
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
         // Check if the employee exists
-        if (!employeeRepo.existsById(employee.getId())) {
+        if (!employeeserv.existsById(employee.getId())) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         // Update employee
-        Employee updatedEmployee = employeeRepo.updateEmployee(employee);
+        Employee updatedEmployee = employeeserv.updateEmployee(employee);
 
         return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
     }
@@ -53,15 +53,15 @@ public class Employeeresource {
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         System.out.println("🛠 Attempting to delete employee with ID: " + id);
 
-        if (!employeeRepo.existsById(id)) {
+        if (!employeeserv.existsById(id)) {
             System.out.println("❌ Employee not found!");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found.");
         }
 
-        employeeRepo.deleteEmployee(id);
+        employeeserv.deleteEmployee(id);
         System.out.println("✅ Employee deleted successfully.");
 
         // ✅ Fix: Return a proper response body
-        return ResponseEntity.ok("Employee deleted successfully.");
+        return ResponseEntity.ok("Employee deleted successfully. ");
     }
 }
